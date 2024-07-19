@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      ="file:./dev.db"
+}
+
+
+model Student{
+  id String @id  @default(uuid()) @unique
+  name String
+  email String @unique
+  password String
+  contact_number String
+  reference_number String
+  programme String
+  department String
+  profile_url String?
+  profile_key String?
+  otp String?
+  isActive Boolean
+  applications Application[]
+}
+
+model Application{
+  id String @default(uuid()) @unique
+  message String?
+  applicantId String
+  internshipId String
+  createdAt DateTime @default(now())
+  applicationStatus String?
+  applicant Student @relation(fields: [applicantId], references: [id])
+  internship Internship   @relation(fields: [internshipId], references: [id])  
+}
+
+
+model Internship{
+  id String @default(uuid()) @unique
+  posted_by String
+  createdAt DateTime @default(now())
+  title String
+  requirements String?
+  description String
+  duration String
+  expected_applicants String?
+  programme String
+  type String
+  location        String?
+  start_date      DateTime?
+  end_date        DateTime?
+  applications    Application[]
+  representative  CompanyRepresentative @relation(fields: [posted_by], references: [representative_id])
+}
+
+model CompanyRepresentative {
+  representative_id String       @id @default(uuid())
+  name String
+  email             String    @unique
+  password          String
+  contact_number    String
+  company_id        Int       @unique
+  company           Company   @relation(fields: [company_id], references: [id])
+  profile_url       String?
+  profile_key       String?
+  ishiringmanager String?
+  isActive          Boolean?
+  otp               String?
+  internships       Internship[]
+
+  @@index([company_id], name: "representative_company_idx")
+}
+
+model Company {
+  id Int @id @default(autoincrement())
+  name String
+  location String
+  rating Int? 
+  profile_url String?
+  profile_key String?
+  headcount String?
+  representative CompanyRepresentative?
+}
