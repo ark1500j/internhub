@@ -8,6 +8,7 @@ CREATE TABLE "Student" (
     "reference_number" TEXT NOT NULL,
     "programme" TEXT NOT NULL,
     "department" TEXT NOT NULL,
+    "progress" TEXT NOT NULL DEFAULT 'first',
     "profile_url" TEXT,
     "profile_key" TEXT,
     "otp" TEXT,
@@ -21,7 +22,8 @@ CREATE TABLE "Application" (
     "applicantId" TEXT NOT NULL,
     "internshipId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "applicationStatus" TEXT NOT NULL,
+    "applicationStatus" TEXT,
+    "accept" BOOLEAN NOT NULL DEFAULT false,
     CONSTRAINT "Application_applicantId_fkey" FOREIGN KEY ("applicantId") REFERENCES "Student" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Application_internshipId_fkey" FOREIGN KEY ("internshipId") REFERENCES "Internship" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -29,12 +31,17 @@ CREATE TABLE "Application" (
 -- CreateTable
 CREATE TABLE "Internship" (
     "id" TEXT NOT NULL,
-    "posted_by" INTEGER NOT NULL,
+    "posted_by" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "title" TEXT NOT NULL,
     "requirements" TEXT,
     "description" TEXT NOT NULL,
+    "duration" TEXT NOT NULL,
+    "expected_applicants" TEXT,
+    "programme" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
     "location" TEXT,
+    "soft_delete" BOOLEAN NOT NULL DEFAULT false,
     "start_date" DATETIME,
     "end_date" DATETIME,
     CONSTRAINT "Internship_posted_by_fkey" FOREIGN KEY ("posted_by") REFERENCES "CompanyRepresentative" ("representative_id") ON DELETE RESTRICT ON UPDATE CASCADE
@@ -42,7 +49,7 @@ CREATE TABLE "Internship" (
 
 -- CreateTable
 CREATE TABLE "CompanyRepresentative" (
-    "representative_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "representative_id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -50,6 +57,7 @@ CREATE TABLE "CompanyRepresentative" (
     "company_id" INTEGER NOT NULL,
     "profile_url" TEXT,
     "profile_key" TEXT,
+    "ishiringmanager" TEXT,
     "isActive" BOOLEAN,
     "otp" TEXT,
     CONSTRAINT "CompanyRepresentative_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "Company" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
@@ -60,8 +68,10 @@ CREATE TABLE "Company" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
     "location" TEXT NOT NULL,
+    "rating" INTEGER,
     "profile_url" TEXT,
-    "profile_key" TEXT
+    "profile_key" TEXT,
+    "headcount" TEXT
 );
 
 -- CreateIndex

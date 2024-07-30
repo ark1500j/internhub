@@ -38,19 +38,21 @@ const CommandModal = ({ data }: Props) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [command]);
 
   useEffect(() => {
     setFilteredData(
-      data && data.filter(
-        (item) =>
-          item.title.toLowerCase().includes(search.toLowerCase()) ||
-          (item.location && item.location.toLowerCase().includes(search.toLowerCase()))
-      )
+      data &&
+        data.filter(
+          (item) =>
+            item.title.toLowerCase().includes(search.toLowerCase()) ||
+            (item.location &&
+              item.location.toLowerCase().includes(search.toLowerCase()))
+        )
     );
   }, [search, data]);
-  
+
   return (
     <div className="flex items-center justify-center relative z-50">
       <div
@@ -81,28 +83,18 @@ const CommandModal = ({ data }: Props) => {
           </label>
           <hr />
           <ScrollArea className="h-full w-full text-neutral-400">
-            <Link
-              href="/student/dashboard/search"
-              className="w-full flex gap-3 py-1 px-3 hover:bg-neutral-100 items-center duration-300"
-            >
-              <SearchIcon className="w-4 h-4 text-neutral-200" />
-              <span>search</span>
-            </Link>
-
-            {filteredData &&  filteredData.length === 0 ? (
+            {filteredData && filteredData.length === 0 ? (
               <div className="px-3 py-1 text-neutral-500">No results found</div>
             ) : (
-              filteredData && filteredData.map((item) => (
-                <div
+              filteredData &&
+              filteredData.map((item) => (
+                <a
                   key={item.id}
-                  className="px-3 hover:bg-neutral-100 duration-300 py-1 cursor-pointer"
-                  onClick={() => router.push("/student/dashboard/" + item.id)}
+                  href={`/student/dashboard/${item.id}`}
+                  className="w-full hover:bg-neutral-100 duration-300 flex px-4"
                 >
-                  <div>{item.title}</div>
-                  {/* {item.location && (
-                    <div className="text-sm text-neutral-500">{item.location}</div>
-                  )} */}
-                </div>
+                  {item.title}
+                </a>
               ))
             )}
           </ScrollArea>

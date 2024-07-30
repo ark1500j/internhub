@@ -1,9 +1,11 @@
+"use client"
 import { CircleX } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { ApplyInternshipAction } from "@/app/action";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { mutate } from "swr";
 
 interface Props {
   isModalOpen?: boolean;
@@ -23,6 +25,7 @@ const ApplicationModal = ({ isModalOpen, handleCloseModal, postid }: Props) => {
     if(res?.sucess){
       handleCloseModal()
       toast.success(res.message)
+      mutate("/api/applications");
     }
   };
 

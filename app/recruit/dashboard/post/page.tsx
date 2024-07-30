@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CalendarIcon } from "@radix-ui/react-icons";
+
 import { addDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
 
@@ -32,6 +33,7 @@ import {
 } from "@/components/ui/popover";
 import { PostIntershipAction } from "@/app/action";
 import { useRouter } from "next/navigation";
+import { useSWRConfig } from "swr";
 
 // Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
@@ -65,6 +67,7 @@ export default function Page() {
   const [delta, setDelta] = useState(0);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const router= useRouter();
+  const {mutate}= useSWRConfig();
   const {
     register,
     control,
@@ -90,7 +93,10 @@ export default function Page() {
     });
    const res= await PostIntershipAction(formData);
     if(res?.sucess){
-      router.push("/recuit/dashboard")
+      router.push("/recruit/dashboard")
+      await mutate("/api/internships")
+      await mutate("/api/posts")
+      
     }
     // const programmeArray = res?.programme ? JSON.parse(res.programme) : [];
   };

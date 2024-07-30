@@ -15,10 +15,10 @@ import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function Page() {
-  const [token,setToken]= useState<string|null>()
+  const [token, setToken] = useState<string | null>();
   const [modal, setModal] = useState(false);
-  const [email,setEmail] =useState("")
-  const router= useRouter()
+  const [email, setEmail] = useState("");
+  const router = useRouter();
   const schema = z.object({
     email: z.string().email(),
     password: z
@@ -34,18 +34,18 @@ export default function Page() {
   } = useForm<Inputs>({ resolver: zodResolver(schema) });
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
-    const {email, password}= data
-    const res= await signInAction(email,password,"student")
-     if(res?.message==="valid"){
-       router.push("/student/dashboard")
-     }else if(res?.message==="invalid"){
-      toast.error("invalid crendentials")
-      reset()
-     }else if(res?.message==="inactive"){
-      const res= await resendOtpAction(email,"student")
-      setEmail(email)
-       setModal(true)
-     }
+    const { email, password } = data;
+    const res = await signInAction(email, password, "student");
+    if (res?.message === "valid") {
+      router.push("/student/dashboard");
+    } else if (res?.message === "invalid") {
+      toast.error("invalid crendentials");
+      reset();
+    } else if (res?.message === "inactive") {
+      const res = await resendOtpAction(email, "student");
+      setEmail(email);
+      setModal(true);
+    }
     console.log(data);
   };
   return (
@@ -74,13 +74,13 @@ export default function Page() {
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
                 <Link
-                  href="/forgot-password"
+                  href="/student/forgot-password"
                   className="ml-auto inline-block text-sm underline"
                 >
                   Forgot your password?
                 </Link>
               </div>
-              <Input  type="password" {...register("password")} />
+              <Input type="password" {...register("password")} />
               {errors.password && (
                 <p className="text-red-600 text-xs">
                   {" "}
@@ -88,7 +88,7 @@ export default function Page() {
                 </p>
               )}
             </div>
-            <Button disabled={ isSubmitting} type="submit" className="w-full">
+            <Button disabled={isSubmitting} type="submit" className="w-full">
               {isSubmitting ? (
                 <div className="flex items-center justify-center w-full">
                   <div className="loader"></div>
@@ -123,13 +123,13 @@ export default function Page() {
         <img src="/logo.svg" /> <span className="text-lg mt-2">InternHub</span>
       </div>
       <SignInModal
-      isModalOpen={modal}
-      handleCloseModal={() => {
-        setModal(false);
-      }}
-      email={email}
+        isModalOpen={modal}
+        handleCloseModal={() => {
+          setModal(false);
+        }}
+        email={email}
       />
-      <Toaster/>
+      <Toaster />
     </div>
   );
 }

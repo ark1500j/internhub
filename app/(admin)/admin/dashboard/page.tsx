@@ -171,34 +171,34 @@ export default function Dashboard() {
           <Card x-chunk="dashboard-01-chunk-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Total Revenue
+                Total Students
               </CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+              <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$45,231.89</div>
+              <div className="text-2xl font-bold">250</div>
               <p className="text-xs text-muted-foreground">
-                +20.1% from last month
+                250
               </p>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-1">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Subscriptions
+                Total Employers
               </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+2350</div>
+              <div className="text-2xl font-bold">1000</div>
               <p className="text-xs text-muted-foreground">
-                +180.1% from last month
+                1000
               </p>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Sales</CardTitle>
+              <CardTitle className="text-sm font-medium">Internsips</CardTitle>
               <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -363,7 +363,7 @@ export default function Dashboard() {
           </Card>
           <Card x-chunk="dashboard-01-chunk-5">
             <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
+              <CardTitle>Recent Internship Posts</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-8">
               <div className="flex items-center gap-4">

@@ -1,3 +1,4 @@
+
 import AboutSectionOne from "@/components/About/AboutSectionOne";
 import Blog from "@/components/Blog";
 import ScrollUp from "@/components/Common/ScrollUp";
@@ -10,6 +11,7 @@ import Header from "@/components/header";
 import { Metadata } from "next";
 import ScrollToTop from "@/components/ScrollToTop";
 
+
 export const metadata: Metadata = {
   title: "InternHub",
   description: "This is Home for Internship Opportunities",
@@ -17,6 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
+
   return (
     <>
     <Header/>

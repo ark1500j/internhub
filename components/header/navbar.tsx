@@ -25,12 +25,40 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import React from "react";
+import { generatePdfAction } from "@/app/action";
+import useSWR from "swr";
 
 export default function Navbar() {
   const [command, setCommand] = useCommand();
+  const user = useSWR("/api/user", async (url) => {
+    const response = await fetch(url);
+    return response.json();
+  });
+  console.log(user.data)
+  const handleDownload = async () => {
+    const res = await generatePdfAction();
+
+    if (res?.sucess) {
+      // Convert buffer to ArrayBuffer
+      const arrayBuffer = new Uint8Array(res?.pdf).buffer;
+
+      // Create a blob from the ArrayBuffer
+      const blob = new Blob([arrayBuffer], { type: "application/pdf" });
+
+      // Create a link element, use it to trigger the download, and remove it
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "Internship Letter.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      console.error("Failed to generate PDF");
+    }
+  };
+
   return (
     <header className="top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 bg-purple-700 bg-opacity-65  text-violet-50">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -49,7 +77,7 @@ export default function Navbar() {
           <img src="/logo.svg" alt="logo" />
           Internhub
         </Link>
-        {<NavigationMenuDemo />}
+        {<NavigationMenuDemo handledownload={handleDownload} />}
       </nav>
       <Sheet>
         <SheetTrigger asChild>
@@ -88,7 +116,7 @@ export default function Navbar() {
             </div>
           </div>
         </form>
-        <Profile />
+        {user.data && <Profile name={user.data.name} id={user.data.id} />}
       </div>
     </header>
   );
@@ -132,11 +160,11 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ];
 
-function NavigationMenuDemo() {
+function NavigationMenuDemo({ handledownload }: any) {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <NavigationMenuTrigger className="bg-transparent hover:bg-transparent border-none">
             Progress
           </NavigationMenuTrigger>
@@ -170,30 +198,22 @@ function NavigationMenuDemo() {
               </ListItem>
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
         <NavigationMenuItem>
           <NavigationMenuTrigger className="bg-transparent border-none">
-            Components
+            Downloads
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
+              <ListItem onClick={handledownload} className="cursor-pointer">
+                Download
+              </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Link href="/student/dashboard/applications" legacyBehavior passHref>
-            <NavigationMenuLink>
-              Applications
-            </NavigationMenuLink>
+            <NavigationMenuLink>Applications</NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
       </NavigationMenuList>

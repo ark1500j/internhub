@@ -13,30 +13,26 @@ const imageSchema = z.custom<File>((file) => {
 
   
   export const recruitFromSchema = z.object({
-    fullName: z.string().min(1, 'Name is required'),
+    fullName: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
-    companyName: z.string().min(1, 'Name is required'),
-    location: z.string().min(1,"required"),
-    companyEmployees: z.enum(["apple", "banana", "blueberry", "grapes", "pineapple"]),
-    isHiringManager: z.enum(["Yes", "No"],{message:"Required"}),
-    phone: z.string().min(10, 'phone is required'),
-    companyProfile:  z
-    .any()
-    .refine((file) => {
+    companyName: z.string().min(1, "Name is required"),
+    location: z.string().min(1, "required"),
+    companyEmployees: z.enum(["30", "30+"]),
+    isHiringManager: z.enum(["Yes", "No"], { message: "Required" }),
+    phone: z.string().min(10, "phone is required"),
+    companyProfile: z.any().refine((file) => {
       if (!file) return true; // Allow empty file input
-      const validTypes = ['image/jpeg', 'image/png'];
+      const validTypes = ["image/jpeg", "image/png"];
       const maxSize = 5 * 1024 * 1024; // 5MB
       return validTypes.includes(file.type) && file.size <= maxSize;
     }, "Invalid file type or size"),
-    userProfile: z
-    .any()
-    .refine((file) => {
-      if (!file) return true;  // Allow empty file input
-      const validTypes = ['image/jpeg', 'image/png'];
+    userProfile: z.any().refine((file) => {
+      if (!file) return true; // Allow empty file input
+      const validTypes = ["image/jpeg", "image/png"];
       const maxSize = 5 * 1024 * 1024; // 5MB
       return validTypes.includes(file.type) && file.size <= maxSize;
-    }, "Invalid file type or size")
+    }, "Invalid file type or size"),
   });
 
   export const postschema = z.object({

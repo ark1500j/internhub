@@ -4,12 +4,13 @@ import { PostList } from "@/components/post/postPage"
 import ScrollToTop from "@/components/ScrollToTop";
 import { CommandModal } from "@/components/modals/commandmodal";
 import useSWR from "swr";
+import { Toaster } from "react-hot-toast";
 
 
 export default function Page() {
-  const {data,error,isLoading}= useSWR("/api/internships",async (url)=>{
+  const {data,error,isLoading}= useSWR("/api/internships", async (url)=>{
     const response = await fetch(url);
-    return response.json();
+    return response.json(); 
   }) 
   return (
     <div>
@@ -89,7 +90,7 @@ export default function Page() {
     </div>
   </footer>
   <CommandModal data={data}/>
-
+  <Toaster/>
   </div>
   )
 }

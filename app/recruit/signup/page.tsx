@@ -177,7 +177,9 @@ export default function Page() {
                 className="grid gap-1"
               >
                 <div className="grid gap-1 mb-2">
-                  <Label htmlFor="refNum" className="mb-1">Company Name</Label>
+                  <Label htmlFor="refNum" className="mb-1">
+                    Company Name
+                  </Label>
                   <Input id="refNum" type="text" {...register("companyName")} />
                   {errors.companyName && (
                     <div className="text-xs text-red-600">
@@ -185,10 +187,10 @@ export default function Page() {
                     </div>
                   )}
                 </div>
-                
+
                 <div className="grid gap-1 mb-2">
                   <Label className="mb-1">Location</Label>
-                  <Input  {...register("location")} />
+                  <Input {...register("location")} />
                   {errors.location && (
                     <div className="text-xs text-red-600">
                       {errors.location.message}
@@ -201,25 +203,16 @@ export default function Page() {
                   </Label>
                   <Controller
                     control={control}
-                    render={({ field: { onChange, value} }) => (
+                    render={({ field: { onChange, value } }) => (
                       <Select value={value} onValueChange={onChange}>
                         <SelectTrigger className="w-full">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectItem value="apple">
-                              In person - precise location
-                            </SelectItem>
-                            <SelectItem value="banana">
-                              In person - general location
-                            </SelectItem>
-                            <SelectItem value="blueberry">Remote</SelectItem>
-                            <SelectItem value="grapes">
-                              Hybrid Remote
-                            </SelectItem>
-                            <SelectItem value="pineapple">
-                              On the road
+                            <SelectItem value="30">30</SelectItem>
+                            <SelectItem value="30+">
+                             30+
                             </SelectItem>
                           </SelectGroup>
                         </SelectContent>
@@ -234,11 +227,13 @@ export default function Page() {
                   )}
                 </div>
                 <div className="grid gap-2 mt-2 mb-2 ">
-                  <Label htmlFor="" className="">Are You a hiring manager?</Label>
+                  <Label htmlFor="" className="">
+                    Are You a hiring manager?
+                  </Label>
                   <Controller
                     control={control}
                     name="isHiringManager"
-                    render={({ field: { onChange, value} }) => (
+                    render={({ field: { onChange, value } }) => (
                       <Select value={value} onValueChange={onChange}>
                         <SelectTrigger className="w-full">
                           <SelectValue />
@@ -545,7 +540,9 @@ export default function Page() {
         isModalOpen={modal}
         handleCloseModal={() => {
           setModal(false);
-        } } email={email}      />
+        }}
+        email={email}
+      />
       <Toaster />
     </>
   );
